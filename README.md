@@ -30,6 +30,19 @@ VICTORIALOGS_APP_NAME=my-laravel-app
 | `VICTORIALOGS_ENDPOINT` | `http://localhost:9428` | Base URL of your VictoriaLogs instance |
 | `VICTORIALOGS_APP_NAME` | `APP_NAME` or `laravel` | Application name tag for log entries |
 | `VICTORIALOGS_TIMEOUT` | `30` | HTTP timeout in seconds |
+| `VICTORIALOGS_AUTH_USERNAME` | `null` | Basic auth username (optional) |
+| `VICTORIALOGS_AUTH_PASSWORD` | `null` | Basic auth password (optional) |
+
+### Basic Authentication
+
+If your VictoriaLogs instance requires authentication, configure basic auth credentials:
+
+```env
+VICTORIALOGS_AUTH_USERNAME=your-username
+VICTORIALOGS_AUTH_PASSWORD=your-password
+```
+
+Leave `VICTORIALOGS_AUTH_USERNAME` empty to disable basic auth.
 
 ### Extra Fields
 
@@ -97,6 +110,9 @@ services:
     environment:
       - VICTORIALOGS_ENDPOINT=http://victorialogs:9428
       - VICTORIALOGS_APP_NAME=my-app
+      # Optional: basic auth
+      # - VICTORIALOGS_AUTH_USERNAME=user
+      # - VICTORIALOGS_AUTH_PASSWORD=secret
     depends_on:
       - victorialogs
 ```
@@ -136,6 +152,7 @@ curl 'http://victorialogs:9428/select/logsql/query' -d 'query=app:"my-laravel-ap
 - **Graceful shutdown**: Flushes all pending logs on SIGTERM/SIGINT
 - **Automatic cleanup**: Optionally truncates shipped files and deletes old rotated logs
 - **Cursor persistence**: Tracks read position to resume after restarts (when cleanup is disabled)
+- **Basic authentication**: Optional HTTP basic auth for secured VictoriaLogs instances
 
 ## License
 
